@@ -1,0 +1,2 @@
+Logo/Überschriften: 	Playfair (https://fonts.google.com/specimen/Playfair+Display?query=playfair)
+Text: 			Inter (https://fonts.google.com/specimen/Inter?query=inter)
