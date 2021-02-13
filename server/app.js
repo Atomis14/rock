@@ -1,6 +1,7 @@
 /////////////node modules
 const express = require('express');
 const session = require('express-session');
+const mongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
@@ -10,14 +11,17 @@ const app = express();
 
 /////////////custom imports
 const User = require('./models/user.model.js');
+
 const authRoutes = require('./routes/auth.routes.js');
+const postRoutes = require('./routes/post.routes.js');
+
 const initializePassport = require('./passportConfig.js');
 
 initializePassport();
 
 /////////////mongoDB Setup
 
-const dbURI = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster.32j3c.mongodb.net/testdb?retryWrites=true&w=majority`;
+const dbURI = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster.32j3c.mongodb.net/rock?retryWrites=true&w=majority`;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(3000))
   .catch(err => console.log(err));
@@ -25,16 +29,18 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 /////////////Middleware
 
 //app.use(express.urlencoded({ extended: true })); //für Form-Anfragen aus einem HTML-Formular | extended-Parameter true erlaubt verschachtelte Daten (also Objekte in Objekten)
-app.use(express.json());  //für JSON-Anfragen via Postman
+app.use(express.json());
 app.use(session({
-  secret: process.env.SESSION_SECRET, //secret, mit dem das Session-Cookie verschlüsselt wird
-  //Folgende zwei Zeilen sind wichtig, wenn ein Client ein Request ohne Session-Cookie macht
-  //in diesem Fall wird auf dem Server trotzdem eine Session erstellt, die aber nichts enthält
-  saveUninitialized: false, //wenn false wird die leere Session nicht gespeichert und auch kein Cookie an den Client gesendet, wenn true passiert beides (damit kann man wiederkehrende Nutzer, die nicht eingeloggt sein müssen erkennen)
-  resave: false //Falls sich nichts geändert hat, Session nicht neu speichern (gewisse Session-Stores brauchen hier true, andere nicht)
+  secret: process.env.SESSION_SECRET,
+  saveUninitialized: false,
+  resave: false,
+  store: new mongoStore({
+    mongooseConnection: mongoose.connection, //vorhandene mongodb-Verbindung nutzen
+    ttl: 1209600  //wie lange die Session gültig bleibt (hier: default 14 Tage, in Sekunden angegeben)
+  })
 }));
 app.use(passport.initialize());
-app.use(passport.session());  //damit Passport Sessions verwendet
+app.use(passport.session());
 app.use(cors());
 
 if (process.env.NODE_ENV === 'production') { //wenn App im Produktions nicht im Dev-Modus läuft wird statischer Ordner gesetzt
@@ -45,6 +51,7 @@ if (process.env.NODE_ENV === 'production') { //wenn App im Produktions nicht im 
 /////////////Route Handlers
 
 app.use('/api/auth', authRoutes);
+app.use('/api/posts', postRoutes);
 
 app.use((req, res) => {
   res.status(404).send('invalid route');
