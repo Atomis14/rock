@@ -17,27 +17,36 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    // der webpackChunkName-Kommentar sorgt dafür, dass alle Routes mit dem gleichen ChunkName zusammen lazy loaded werden
-    component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue')
+    component: () => import('../views/Register.vue')
   },
   {
-    path: '/secured',
-    name: 'Secured',
-    component: () => import('../views/Secured.vue'),
-    /* beforeEnter: (to, from, next) => { //einfache middlware falls nur diese Route geschützt werden muss
-      if(!store.getters['auth/user']) {
-        return next('/login');
-      }
-      next();
-    } */
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import('../views/Dashboard.vue'),
     meta: {
       protectedRoute: true
     }
   },
   {
-    path: '/secured2',
-    name: 'Secured2',
-    component: () => import('../views/Secured2.vue'),
+    path: '/wall',
+    name: 'Wall',
+    component: () => import('../views/Wall.vue'),
+    meta: {
+      protectedRoute: true
+    }
+  },
+  {
+    path: '/messages',
+    name: 'Messages',
+    component: () => import('../views/Messages.vue'),
+    meta: {
+      protectedRoute: true
+    }
+  },
+  {
+    path: '/cloud',
+    name: 'Cloud',
+    component: () => import('../views/Cloud.vue'),
     meta: {
       protectedRoute: true
     }
@@ -67,7 +76,7 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {  //wenn ungeschützte Route aber User eingeloggt auf geschützten Bereich umeleiten
     if(store.getters['auth/user']) {
-      next('/secured');
+      next('/dashboard');
     } else {
       next();
     }

@@ -46,13 +46,11 @@ export default {
 
     async submitForm() {
       this.login(this.form)
-        .then(() => {
+        .then((res) => {
           this.isError = false;
           this.statusMessage = 'successfully logged in';
           //wenn das Promise von login fertig ist, wird auf /secured umgeleitet
-          setTimeout(() => {
-            this.$router.replace('/secured'); //mit replace erscheint die vorherige Seite nicht im Verlauf
-          }, 1000)
+          this.$router.replace('/dashboard'); //mit replace erscheint die vorherige Seite nicht im Verlauf
         })
         .catch((err) => {  //Fehlermeldung für den User falls Login nicht geklappt hat
           this.isError = true;

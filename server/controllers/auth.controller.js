@@ -8,7 +8,7 @@ const login = (req, res, next) => {
     if (err) {
       return next(err); //vermutlich falls ein Server-Fehler auftaucht
     }
-    if(!req.body.username || !req.body.password) { //falls Benutzername oder Passwort leer
+    if (!req.body.username || !req.body.password) { //falls Benutzername oder Passwort leer
       return res.status(401).send('please provide username and password');
     }
     if (!user) {  //wenn der Benutzer sich nicht richtig anmeldet, ist der user nicht gesetzt
@@ -22,15 +22,16 @@ const login = (req, res, next) => {
       return res.sendStatus(200);
     });
   })(req, res, next); //passport.authenticate gibt eine Funktion zurück, deshalb hier das (req, res, next) am Ende (verstehe trotzdem nicht genau was das macht)
-}
+};
 
 const authenticate = (req, res) => { //eigentliche Funktion, durch Middleware geschützt
   const user = req.user;  //in req.user ist der User, der bei deserializeUser oben aus dem Array gezogen wurde
-  res.send({
+  res.json({
+    id: user._id,
     username: user.username,
     createdAt: user.createdAt
   });
-}
+};
 
 const register = async (req, res) => {
   if (!req.body.username || !req.body.password || !req.body.passwordRepeat) { //wenn Username und Password nicht gesetzt oder leerer string
@@ -67,12 +68,12 @@ const register = async (req, res) => {
         res.status(500).send('could not save user to db');
       });
   });
-}
+};
 
 const logout = (req, res) => {
   req.logout();
   res.sendStatus(200);
-}
+};
 
 
 module.exports = {
@@ -80,4 +81,4 @@ module.exports = {
   authenticate,
   register,
   logout
-}
+};

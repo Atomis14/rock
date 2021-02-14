@@ -10,13 +10,9 @@ require('dotenv').config();
 const app = express();
 
 /////////////custom imports
-const User = require('./models/user.model.js');
-
-const authRoutes = require('./routes/auth.routes.js');
-const postRoutes = require('./routes/post.routes.js');
+//const User = require('./models/user.model.js');
 
 const initializePassport = require('./passportConfig.js');
-
 initializePassport();
 
 /////////////mongoDB Setup
@@ -43,16 +39,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
 
-if (process.env.NODE_ENV === 'production') { //wenn App im Produktions nicht im Dev-Modus läuft wird statischer Ordner gesetzt
-  app.use(express.static(__dirname + '/public/'));
-  app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));  //ungültige Routes werden an die index.html weitergeleitet
-}
-
 /////////////Route Handlers
 
-app.use('/api/auth', authRoutes);
-app.use('/api/posts', postRoutes);
+const authRoutes = require('./routes/auth.routes.js');
+const postsRoutes = require('./routes/posts.routes.js');
 
-app.use((req, res) => {
-  res.status(404).send('invalid route');
-});
+app.use('/api/auth', authRoutes);
+app.use('/api/posts', postsRoutes);
+
+if (process.env.NODE_ENV === 'production') { //wenn App im Produktions nicht im Dev-Modus läuft wird statischer Ordner gesetzt
+  app.use(express.static(__dirname + '/public/'));
+  app.get(/.*/, (_, res) => res.sendFile(__dirname + '/public/index.html'));  //ungültige Routes werden an die index.html weitergeleitet
+} else {
+  app.use((_, res) => {
+    res.status(404).send('invalid route');
+  });
+}

@@ -60,9 +60,7 @@ export default {
         .then(() => {
           this.statusMessage = 'successfully registered';
           this.isError = false;
-          setTimeout(() => {
-            this.$router.replace('/secured');
-          }, 1000);
+          this.$router.replace('/dashboard');
         })
         .catch((err) => {
           this.isError = true;

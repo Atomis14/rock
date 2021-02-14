@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cross-env NODE_ENV=development nodemon server/app.js",
+    "start": "cross-env NODE_ENV=production node server/app.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
     "passport-local": "^1.0.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.7"
   }
 }

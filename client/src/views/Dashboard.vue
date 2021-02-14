@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>Secured</h1>
+    <h1>Dashboard</h1>
     <template v-if="user">
       <h2>Hello, {{ user.username }}</h2>
       <p><b>Account created:</b> {{ new Date(user.createdAt).toLocaleString('fr-ch') }}</p>
     </template>
-    <a href="#" @click="logout">Logout</a>
+    <a @click="logout">Logout</a>
   </div>
 </template>
 

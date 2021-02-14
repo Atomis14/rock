@@ -6,11 +6,15 @@
         <router-link to="/login">Login</router-link>
       </template>
       <template v-else>
-        <router-link to="/secured">Secured</router-link>
-        <router-link to="/secured2">Secured2</router-link>
+        <router-link to="/dashboard">Dashboard</router-link>
+        <router-link to="/wall">Wall</router-link>
+        <router-link to="/messages">Messages</router-link>
+        <router-link to="/cloud">Cloud</router-link>
       </template>
     </div>
-    <router-view />
+    <div class="container">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -51,4 +55,10 @@ export default {
     }
   }
 }
+
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
 </style>
