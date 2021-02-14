@@ -2,12 +2,13 @@ import { ApiCore } from './utilities/core.js';
 import { apiProvider } from './utilities/provider.js';
 
 const authAPI = new ApiCore('/auth', {
-  getAll: true,
-  getSingle: true,
+  get: true,
+  getOne: true,
   post: true,
   put: false,
   patch: false,
-  delete: true
+  delete: false,
+  deleteOne: true
 });
 
 authAPI.post = (specifier, model) => {

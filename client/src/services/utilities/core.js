@@ -4,15 +4,15 @@ export class ApiCore {
   constructor(url, options) {
     this.url = url;
 
-    if (options.getAll) {
-      this.getAll = () => {
-        return apiProvider.getAll(this.url);
+    if (options.get) {
+      this.get = () => {
+        return apiProvider.get(this.url);
       };
     }
 
-    if (options.getSingle) {
-      this.getSingle = (id) => {
-        return apiProvider.getSingle(this.url, id);
+    if (options.getOne) {
+      this.getOne = (id) => {
+        return apiProvider.getOne(this.url, id);
       };
     }
 
@@ -35,8 +35,14 @@ export class ApiCore {
     }
 
     if (options.remove) {
-      this.remove = (id) => {
-        return apiProvider.remove(this.url, id);
+      this.remove = () => {
+        return apiProvider.remove(this.url);
+      };
+    }
+
+    if (options.removeOne) {
+      this.removeOne = (id) => {
+        return apiProvider.removeOne(this.url, id);
       };
     }
   }

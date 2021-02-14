@@ -35,7 +35,7 @@ export default {
     async attempt({ commit }) {
       try {
         //const response = await axios.get('/auth/authenticate');
-        const response = await authAPI.getAll();
+        const response = await authAPI.get();
         commit('SET_USER', response);
       } catch (err) {
         commit('SET_USER', null);

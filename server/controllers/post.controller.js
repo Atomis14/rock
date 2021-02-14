@@ -27,7 +27,21 @@ const addPost = (req, res) => {
   });
 };
 
+const deleteOnePost = (req, res) => {
+  Post.findOneAndDelete({ _id: req.params.id, user: req.user.id }, (err, post) => {
+    if(err) {
+      console.log(err);
+      return res.sendStatus(500);
+    }
+    if(post === null) {
+      return res.sendStatus(400);
+    }
+    res.send();
+  });
+};
+
 module.exports = {
   getAllPosts,
-  addPost
+  addPost,
+  deleteOnePost
 };

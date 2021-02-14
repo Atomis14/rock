@@ -17,6 +17,13 @@
         >
           <p>{{ message.content }}</p>
           <p>by: {{ message.user.username }}</p>
+          <a
+            @click="deletePost"
+            :data-id="message._id"
+            v-if="message.user._id === user.id"
+          >
+            Delete
+          </a>
         </div>
       </template>
       <template v-else>
@@ -67,9 +74,16 @@ export default {
         });
     },
 
+    deletePost(e) {
+      const id = e.target.dataset.id;
+      postsAPI.removeOne(id).then((res) => {
+        this.getPosts();
+      });
+    },
+
     getPosts() {
       postsAPI
-        .getAll()
+        .get()
         .then((res) => {
           this.messages = res;
         })
@@ -104,6 +118,10 @@ export default {
     width: calc(25% - 20px);
     border: 1px solid black;
     background-color: white;
+
+    a {
+      color: $color-warning;
+    }
   }
 }
 </style>
