@@ -14,6 +14,17 @@ Gegensatz zu den nicht getaggten Versionen sind bei getaggten Versionen der `nod
 
 Der Server kann mit `npm run start` gestartet werden, die Website ist unter http://localhost:3000/ erreichbar. Node.js muss installiert sein.
 
+## Neue Release-Version erstellen
+
+1. `master`-Branch in release-Branch mergen (`git merge master` wenn innerhalb `release`-Branch)
+2. Frontend kompilieren (`npm run build` **im `client`-Ordner!**)
+3. `node_modules`-Ordner des Servers in Staging-Area zwingen (`git add -f node_modules`)
+5. alle Änderungen stagen (`git add .`)
+6. Änderungen committen (`git commit -m <message>`)
+7. letzten Commit mit annotated Versions-Tag versehen (`git tag -a vX.X -m <message> HEAD`)
+8. Repository in Remote pushen (`git push origin release`)
+9. Tag in Remote pushen (`git push origin <tagname>`)
+
 ## Datenbank
 
 Als Datenbank wird mongoDB verwendet.  
