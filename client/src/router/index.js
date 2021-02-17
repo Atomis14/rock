@@ -51,6 +51,14 @@ const routes = [
       protectedRoute: true
     }
   },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('../views/Profile.vue'),
+    meta: {
+      protectedRoute: true
+    }
+  },
   //nicht exisiterende Routes abfangen
   {
     path: '/:cachAll(.*)',  //regex-Pattern

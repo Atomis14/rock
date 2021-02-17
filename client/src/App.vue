@@ -10,6 +10,7 @@
         <router-link to="/wall">Wall</router-link>
         <router-link to="/messages">Messages</router-link>
         <router-link to="/cloud">Cloud</router-link>
+        <router-link to="/profile">Profile</router-link>
       </template>
     </div>
     <div class="container">
@@ -37,13 +38,13 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
+  text-align: center;
 }
 
 #nav {
   padding: 30px;
-
+  text-align: center;
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -54,11 +55,6 @@ export default {
       border-bottom: 2px solid $color-primary;
     }
   }
-}
-
-.container {
-  max-width: 1300px;
-  margin: 0 auto;
 }
 
 </style>

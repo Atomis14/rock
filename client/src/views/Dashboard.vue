@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="Dashboard view">
     <h1>Dashboard</h1>
     <template v-if="user">
       <h2>Hello, {{ user.username }}</h2>

@@ -9,8 +9,7 @@ require('dotenv').config();
 
 const app = express();
 
-/////////////custom imports
-//const User = require('./models/user.model.js');
+/////////////passport Setup
 
 const initializePassport = require('./passportConfig.js');
 initializePassport();
@@ -42,10 +41,14 @@ app.use(cors());
 /////////////Route Handlers
 
 const authRoutes = require('./routes/auth.routes.js');
+const usersRoutes = require('./routes/users.routes.js');
 const postsRoutes = require('./routes/posts.routes.js');
+const messagesRoutes = require('./routes/messages.routes.js');
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
+app.use('/api/messages', messagesRoutes);
 
 if (process.env.NODE_ENV === 'production') { //wenn App im Produktions nicht im Dev-Modus läuft wird statischer Ordner gesetzt
   app.use(express.static(__dirname + '/public/'));

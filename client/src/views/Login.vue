@@ -1,5 +1,5 @@
 <template>
-  <div class="Login">
+  <div class="Login view">
     <h1>Login</h1>
     <form class="form" @submit.prevent="submitForm">
       <input

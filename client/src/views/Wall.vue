@@ -1,5 +1,5 @@
 <template>
-  <div class="Wall">
+  <div class="Wall view">
     <h1>Wall</h1>
     <p>Public messages</p>
     <form @submit.prevent="submitForm">
@@ -9,26 +9,36 @@
       <p>{{ form.error }}</p>
     </form>
     <div class="Wall__messageContainer">
-      <template v-if="messages">
-        <div
-          class="Wall__message"
-          v-for="(message, index) in messages"
-          :key="index"
-        >
-          <p>{{ message.content }}</p>
-          <p>by: {{ message.user.username }}</p>
-          <a
-            @click="deletePost"
-            :data-id="message._id"
-            v-if="message.user._id === user.id"
-          >
-            Delete
-          </a>
+      <template v-if="allMessages">
+        <div class="Wall__col">
+          <PostItem
+            v-for="(message, index) in messages.col1"
+            :key="index"
+            :message="message"
+            :index="index"
+            class="grid-item"
+          />
+        </div>
+        <div class="Wall__col">
+          <PostItem
+            v-for="(message, index) in messages.col2"
+            :key="index"
+            :message="message"
+            :index="index"
+            class="grid-item"
+          />
+        </div>
+        <div class="Wall__col">
+          <PostItem
+            v-for="(message, index) in messages.col3"
+            :key="index"
+            :message="message"
+            :index="index"
+            class="grid-item"
+          />
         </div>
       </template>
-      <template v-else>
-        <p>Could not fetch any posts</p>
-      </template>
+      <p v-else>Could not fetch any posts</p>
     </div>
   </div>
 </template>
@@ -38,14 +48,21 @@
 import { mapGetters } from 'vuex';
 import { postsAPI } from '../services/posts.service.js';
 
+import PostItem from '../components/PostItem.vue';
+
 export default {
+  components: {
+    PostItem,
+  },
+
   data() {
     return {
       form: {
         content: '',
         error: '',
       },
-      messages: null,
+      allMessages: null,
+      windowWidth: window.innerWidth,
     };
   },
 
@@ -53,6 +70,20 @@ export default {
     ...mapGetters({
       user: 'auth/user',
     }),
+
+    messages() {
+      return {
+        col1: this.allMessages.filter((_, index) => {
+          return index % 3 == 0;
+        }),
+        col2: this.allMessages.filter((_, index) => {
+          return index % 3 == 1;
+        }),
+        col3: this.allMessages.filter((_, index) => {
+          return index % 3 == 0;
+        }),
+      };
+    },
   },
 
   methods: {
@@ -74,18 +105,11 @@ export default {
         });
     },
 
-    deletePost(e) {
-      const id = e.target.dataset.id;
-      postsAPI.removeOne(id).then((res) => {
-        this.getPosts();
-      });
-    },
-
     getPosts() {
       postsAPI
         .get()
         .then((res) => {
-          this.messages = res;
+          this.allMessages = res;
         })
         .catch((err) => {
           console.log(err);
@@ -102,25 +126,18 @@ export default {
 
 <style lang="scss" scoped>
 .Wall {
-  textarea {
-    width: 250px;
-    height: 100px;
-  }
-
   &__messageContainer {
     display: flex;
     flex-wrap: wrap;
   }
 
-  &__message {
-    margin: 10px;
-    padding: 10px;
-    width: calc(25% - 20px);
-    border: 1px solid black;
-    background-color: white;
-
-    a {
-      color: $color-warning;
+  &__col {
+    width: 33%;
+    @include md {
+      width: 50%;
+    }
+    @include sm {
+      width: 100%;
     }
   }
 }
