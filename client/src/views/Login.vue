@@ -1,23 +1,21 @@
 <template>
-  <div class="Login view">
-    <h1>Login</h1>
+  <div class="AuthForm frosted">
+    <img src="@/assets/img/logo.svg" alt="rock logo" />
+    <p>Open source social network</p>
     <form class="form" @submit.prevent="submitForm">
       <input
         type="text"
         name="username"
-        placeholder="Benutzername"
+        placeholder="Username"
         v-model="form.username"
-      /><br />
+      />
       <input
         type="password"
         name="password"
-        placeholder="Passwort"
+        placeholder="Password"
         v-model="form.password"
-      /><br />
+      />
       <input type="submit" value="Login" />
-      <p :class="[isError ? 'form__errorMessage' : 'form__successMessage']">
-        {{ statusMessage }}
-      </p>
     </form>
   </div>
 </template>
@@ -28,15 +26,13 @@ import { mapActions } from 'vuex';
 
 export default {
   name: 'Login',
-  //components: {},
+
   data() {
     return {
       form: {
         username: '',
         password: '',
       },
-      isError: true,
-      statusMessage: '',
     };
   },
   methods: {
@@ -49,13 +45,9 @@ export default {
         .then((res) => {
           this.isError = false;
           this.statusMessage = 'successfully logged in';
-          //wenn das Promise von login fertig ist, wird auf /secured umgeleitet
-          this.$router.replace('/dashboard'); //mit replace erscheint die vorherige Seite nicht im Verlauf
+          this.$router.replace('/dashboard');
         })
-        .catch((err) => {  //Fehlermeldung für den User falls Login nicht geklappt hat
-          this.isError = true;
-          this.statusMessage = err.response.data;
-        });
+        .catch((err) => {});
     },
   },
 };

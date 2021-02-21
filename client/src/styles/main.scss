@@ -1,22 +1,95 @@
 * {
-  box-sizing: border-box;
+  box-sizing: border-box !important;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: $font-family-sans;
+  font-weight: $font-weight-normal;
+  overflow-x: hidden;
 }
 
 pre {
   text-align: left;
 }
 
-body {
-  background-color: rgb(248, 248, 248);
+article {
+  min-height: 100vh;
+  max-width: 100%;
+  padding: 10px;
+  &.flexArticle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+h1,
+h2 {
+  font-weight: 700;
+}
+
+p,
+a,
+span,
+div,
+pre {
+  font-size: 1.6rem;
 }
 
 a {
   color: $color-primary;
+  text-decoration: none;
   &:hover {
     cursor: pointer;
     text-decoration: underline;
   }
 }
+
+.material-icons {
+  opacity: 0.8;
+}
+
+.view {
+  padding: 30px;
+  margin-left: 330px;
+  width: 100%;
+}
+
+/////////////REUSABLE COMPONENTS
+
+.frosted {
+  background-color: rgba(white, 0.5);
+  border: 2px solid rgba(white, 0.25);
+  backdrop-filter: blur(15px);
+  &--shadow {
+    box-shadow: 0 0 10px rgba($color: black, $alpha: 0.1);
+  }
+}
+
+.button {
+  border-radius: 7px;
+  padding: 10px;
+  margin: 10px;
+  transition: all 0.4s ease;
+  &:hover {
+    text-decoration: none;
+  }
+  &--outline {
+    border: 2px solid $color-darkgrey;
+    &:hover {
+      background-color: $color-darkgrey;
+      color: white;
+    }
+  }
+}
+
+/////////////FORMS
 
 .form {
   &__errorMessage {
@@ -24,6 +97,9 @@ a {
   }
   &__successMessage {
     color: $color-success;
+  }
+  * {
+    font-family: $font-family-sans;
   }
 }
 
@@ -33,18 +109,67 @@ textarea {
 }
 
 input {
-  font-size: 15px;
+  font-size: 1.5rem;
   padding: 5px;
   margin: 5px;
   width: 200px;
 }
 
-input[type=text] {
-  
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
 }
 
-input[type=button] {
+input[type="text"],
+input[type="password"] {
+  border-radius: 7px;
+  padding: 7px 12px;
+  border: none;
+  height: 40px;
+}
+
+input[type="button"],
+input[type="submit"] {
+  border: none;
+  border-radius: 7px;
+  padding: 7px;
+  transition: opacity 0.4s ease;
+  font-weight: $font-weight-bold;
+  height: 40px;
   &:hover {
     cursor: pointer;
+    opacity: 0.8;
+  }
+}
+
+/////////////SHARED
+
+.AuthForm {
+  margin: auto;
+  text-align: center;
+  padding: 30px;
+  margin: auto;
+  border-radius: 15px;
+  max-width: 370px;
+  opacity: 0;
+  input[type='text'],
+  input[type='password'] {
+    width: calc(100% - 8px);
+    margin-bottom: 10px;
+    border: 2px solid rgba(white, 0.5);
+    background-color: transparent;
+    transition: background-color 0.4s ease;
+    &::placeholder {
+      font-weight: $font-weight-normal;
+      color: rgba($color-darkgrey, 0.8);
+    }
+    &:focus {
+      background-color: rgba(white, 0.6);
+    }
+  }
+  input[type='submit'] {
+    width: calc(100% - 8px);
+    padding: 10px;
   }
 }

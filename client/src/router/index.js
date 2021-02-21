@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import store from '../store';
 
 import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+import Dashboard from '../views/Dashboard.vue';
 
 const routes = [
   {
@@ -17,12 +19,12 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: () => import('../views/Register.vue')
+    component: Register
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('../views/Dashboard.vue'),
+    component: Dashboard,
     meta: {
       protectedRoute: true
     }
@@ -78,17 +80,22 @@ router.beforeEach(async (to, from, next) => {
   const toProtectedRoute = to.matched.some(record => record.meta.protectedRoute);
   if (toProtectedRoute) { //wenn geschützte Route und user nicht eingeloggt auf login umleiten
     if (!store.getters['auth/user']) {
-      next('/login'); 
+      next('/login');
     } else {
       next();
     }
   } else {  //wenn ungeschützte Route aber User eingeloggt auf geschützten Bereich umeleiten
-    if(store.getters['auth/user']) {
+    if (store.getters['auth/user']) {
       next('/dashboard');
     } else {
       next();
     }
   }
+});
+
+router.afterEach((to, from) => {
+  window.scrollTo(0,0);
+  
 });
 
 export default router;

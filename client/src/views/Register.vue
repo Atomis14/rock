@@ -1,32 +1,27 @@
 <template>
-  <div class="Login view">
-    <h1>Register</h1>
+  <div class="AuthForm frosted container">
+    <img src="@/assets/img/logo.svg" alt="rock logo" />
+    <p>Open source social network</p>
     <form class="form" @submit.prevent="submitForm">
       <input
         type="text"
         name="username"
         placeholder="Benutzername"
         v-model="form.username"
-      /><br />
+      />
       <input
         type="password"
         name="password"
         placeholder="Passwort"
         v-model="form.password"
-      /><br />
+      />
       <input
         type="password"
         name="passwordRepeat"
         placeholder="Passwort wiederholen"
         v-model="form.passwordRepeat"
-      /><br />
-      <input type="submit" value="Login" />
-      <p
-        :class="[isError ? 'form__errorMessage' : 'form__successMessage']"
-        v-if="statusMessage"
-      >
-        {{ statusMessage }}
-      </p>
+      />
+      <input type="submit" value="Register" />
     </form>
   </div>
 </template>
@@ -45,8 +40,6 @@ export default {
         password: '',
         passwordRepeat: '',
       },
-      isError: true,
-      statusMessage: '',
     };
   },
 
@@ -58,14 +51,9 @@ export default {
     async submitForm() {
       this.register(this.form)
         .then(() => {
-          this.statusMessage = 'successfully registered';
-          this.isError = false;
           this.$router.replace('/dashboard');
         })
-        .catch((err) => {
-          this.isError = true;
-          this.statusMessage = err.response.data;
-        });
+        .catch((err) => {});
     },
   },
 };

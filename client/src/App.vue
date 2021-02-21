@@ -1,33 +1,60 @@
 <template>
-  <div>
-    <div id="nav">
-      <template v-if="!user">
-        <router-link to="/register">Register</router-link>
-        <router-link to="/login">Login</router-link>
-      </template>
-      <template v-else>
-        <router-link to="/dashboard">Dashboard</router-link>
-        <router-link to="/wall">Wall</router-link>
-        <router-link to="/messages">Messages</router-link>
-        <router-link to="/cloud">Cloud</router-link>
-        <router-link to="/profile">Profile</router-link>
-      </template>
-    </div>
-    <div class="container">
-      <router-view />
-    </div>
+  <div id="app" :class="[!user ? 'public' : 'secure']">
+    
+    <Sidebar v-if="user" />
+
+    <PublicNav v-else />
+
+    <router-view v-slot="{ Component }">
+      <transition
+        mode="out-in"
+        @before-enter="beforeEnter"
+        @enter="enter"
+        @leave="leave"
+      >
+        <component :is="Component"></component>
+      </transition>
+    </router-view>
+
+    <Notification-wrapper />
   </div>
 </template>
 
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import gsap from 'gsap';
+import NotificationWrapper from './components/NotificationWrapper.vue';
+import PublicNav from './components/PublicNav.vue';
+import Sidebar from './components/Sidebar.vue';
 
 export default {
+  data() {
+    return {};
+  },
+
+  components: {
+    NotificationWrapper,
+    PublicNav,
+    Sidebar
+  },
+
   computed: {
     ...mapGetters({
       user: 'auth/user',
     }),
+  },
+
+  methods: {
+    beforeEnter(el) {
+      gsap.from(el, { opacity: 0, x: -20 });
+    },
+    enter(el, done) {
+      gsap.to(el, { opacity: 1, x: 0, duration: 0.5, onComplete: done });
+    },
+    leave(el, done) {
+      gsap.to(el, { opacity: 0, x: 20, duration: 0.5, onComplete: done });
+    },
   },
 };
 </script>
@@ -35,26 +62,35 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  text-align: center;
-}
-
-#nav {
-  padding: 30px;
-  text-align: center;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    text-decoration: none;
-    padding: 10px;
-    &.router-link-exact-active {
-      color: $color-primary;
-      border-bottom: 2px solid $color-primary;
+  display: flex;
+  min-height: 100vh;
+  min-width: 100vw;
+  transition: background-color 1s ease;
+  &::after {
+    opacity: 0;
+    transition: all 1s ease;
+    content: '';
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+        45deg,
+        rgba($color-mint, 0.35) 0%,
+        rgba($color-violet, 0.35) 100%
+      ),
+      url('~@/assets/img/background-compressed.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  &.public {
+    &::after {
+      opacity: 1;
     }
   }
 }
-
 </style>

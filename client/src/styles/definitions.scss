@@ -1,36 +1,80 @@
+/////////////FONTS
+
+@font-face {
+    font-family: 'Inter';
+    src: url('~@/assets/fonts/Inter/static/Inter-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('~@/assets/fonts/Inter/static/Inter-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('~@/assets/fonts/Inter/static/Inter-Bold.ttf') format('truetype');
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('~@/assets/fonts/Inter/static/Inter-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: 'Playfair';
+    src: url('~@/assets/fonts/Playfair_Display/static/PlayfairDisplay-Regular.ttf') format('truetype');
+    font-weight: 400;
+}
+
+$font-family-sans: 'Inter', Helvetica, sans-serif;
+$font-family-serif: 'Playfair', 'Inter', serif;
+$font-weight-normal: 500;
+$font-weight-bold: 600;
+$font-weight-black: 800;
+
 /////////////COLORS
 
-$color-primary: #2980B9;
+$color-royalblue: #0019FF;
+$color-violet: #6A70AD;
+$color-mint: #5BB7A6;
+$color-darkgrey: #1E1E1E;
+
+$color-primary: black;
+
 $color-warning: #C0392B;
 $color-success: #27AE60;
 
 /////////////MEDIA QUERIES
 
-$screen-xs: 576px;
-$screen-sm: 768px;
-$screen-md: 992px;
-$screen-lg: 1200px;
+$screen-sm: 576px;
+$screen-md: 768px;
+$screen-lg: 992px;
+$screen-xl: 1200px;
 
 @mixin xs {
-    @media (max-width: $screen-xs) {
-        @content;
-    }
-}
-
-@mixin sm {
     @media (max-width: $screen-sm) {
         @content;
     }
 }
 
-@mixin md {
+@mixin sm {
     @media (max-width: $screen-md) {
         @content;
     }
 }
 
-@mixin lg {
+@mixin md {
     @media (max-width: $screen-lg) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media (max-width: $screen-xl) {
         @content;   
     }
 }

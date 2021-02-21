@@ -1,6 +1,7 @@
 import { createStore, createLogger } from 'vuex';
-//import { create } from '../../../server/user.model';
-import auth from './auth';
+
+import auth from './auth.js';
+import notifications from './notifications.js';
 
 export default createStore({
   state: {
@@ -11,6 +12,7 @@ export default createStore({
   },
   modules: {
     auth,
+    notifications,
     plugins: [createLogger()]
   },
   plugins: [createLogger()]

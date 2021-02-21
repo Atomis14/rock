@@ -29,6 +29,7 @@ const authenticate = (req, res) => { //eigentliche Funktion, durch Middleware ge
   res.json({
     id: user._id,
     username: user.username,
+    fullname: user.fullname,
     createdAt: user.createdAt
   });
 };

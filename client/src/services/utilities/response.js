@@ -1,3 +1,5 @@
+import store from '../../store/index.js';
+
 export function handleResponse(response) {
   if (response.results) {
     return response.results;
@@ -11,5 +13,12 @@ export function handleResponse(response) {
 }
 
 export function handleError(error) {
+  if(error.response.config.url != '/auth') {
+    store.dispatch('notifications/setNotification', {
+      type: 'error',
+      message: error.response.data,
+      id: Date.now()
+    });
+  }
   throw error;
 }
