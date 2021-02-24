@@ -1,5 +1,5 @@
 <template>
-  <transition appear name="sidebar">
+  <transition appear disappear name="sidebar">
     <div class="Sidebar">
       <router-link to="/dashboard" class="Sidebar__logoLink">
         <img
@@ -24,6 +24,10 @@
         <router-link to="/cloud">
           <i class="material-icons">cloud</i>
           <span>Cloud</span>
+        </router-link>
+        <router-link to="/people">
+          <i class="material-icons">people</i>
+          <span>People</span>
         </router-link>
       </div>
 
@@ -88,6 +92,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   position: fixed;
+  z-index: 1;
   height: 100vh;
   width: 330px;
   background: linear-gradient(
@@ -114,12 +119,13 @@ export default {
       text-decoration: none;
       &:hover {
         opacity: 0.6;
+        text-decoration: none;
       }
       span {
-        font-size: 2.5rem;
+        font-size: 2.3rem;
       }
       i {
-        font-size: 3rem;
+        font-size: 2.8rem;
         margin-right: 15px;
         color: black;
       }
@@ -146,6 +152,7 @@ export default {
   }
   &__username {
     font-size: 2rem;
+    font-weight: 600;
   }
   &__editLink {
     display: flex;

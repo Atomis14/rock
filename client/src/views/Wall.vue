@@ -1,68 +1,60 @@
 <template>
-  <div class="Wall view">
-    <h1>Wall</h1>
-    <p>Public messages</p>
-    <form @submit.prevent="submitForm">
-      <textarea v-model="form.content"></textarea>
-      <br />
-      <input type="submit" value="Post" />
-      <p>{{ form.error }}</p>
-    </form>
-    <div class="Wall__messageContainer">
-      <template v-if="allMessages">
-        <div class="Wall__col">
-          <PostItem
-            v-for="(message, index) in messages.col1"
-            :key="index"
-            :message="message"
-            :index="index"
-            class="grid-item"
-          />
-        </div>
-        <div class="Wall__col">
-          <PostItem
-            v-for="(message, index) in messages.col2"
-            :key="index"
-            :message="message"
-            :index="index"
-            class="grid-item"
-          />
-        </div>
-        <div class="Wall__col">
-          <PostItem
-            v-for="(message, index) in messages.col3"
-            :key="index"
-            :message="message"
-            :index="index"
-            class="grid-item"
-          />
-        </div>
-      </template>
-      <p v-else>Could not fetch any posts</p>
+  <transition-group name="wallstate" tag="div" class="Wall view">
+    <div class="Wall__messageContainer" v-if="loadingComplete">
+      <form @submit.prevent="submitForm" class="Wall__createContainer">
+        <textarea v-model="form.content"></textarea>
+        <br />
+        <input type="submit" value="Post" />
+      </form>
+      <transition-group
+        v-if="messages"
+        appear
+        @beforeEnter="beforeEnter"
+        @enter="enter"
+      >
+        <PostItem
+          v-for="(message, index) in messages"
+          :key="index"
+          :message="message"
+          :index="index"
+          :data-index="index"
+          class="PostItem"
+          @deleted="getPosts"
+        />
+      </transition-group>
+      <h1 v-else-if="loadingComplete && !messages && !loadingError">
+        There aren't any messages yet.
+      </h1>
+      <h1 v-else-if="loadingError">
+        Could not load messages. Please try later.
+      </h1>
     </div>
-  </div>
+    <Overlay v-else />
+  </transition-group>
 </template>
 
 
 <script>
 import { mapGetters } from 'vuex';
 import { postsAPI } from '../services/posts.service.js';
-
+import gsap from 'gsap';
 import PostItem from '../components/PostItem.vue';
+import Overlay from '../components/Overlay.vue';
 
 export default {
   components: {
     PostItem,
+    Overlay
   },
 
   data() {
     return {
       form: {
         content: '',
-        error: '',
       },
-      allMessages: null,
-      windowWidth: window.innerWidth,
+      messages: null,
+      loadingComplete: false,
+      loadingError: false,
     };
   },
 
@@ -70,28 +62,10 @@ export default {
     ...mapGetters({
       user: 'auth/user',
     }),
-
-    messages() {
-      return {
-        col1: this.allMessages.filter((_, index) => {
-          return index % 3 == 0;
-        }),
-        col2: this.allMessages.filter((_, index) => {
-          return index % 3 == 1;
-        }),
-        col3: this.allMessages.filter((_, index) => {
-          return index % 3 == 0;
-        }),
-      };
-    },
   },
 
   methods: {
     submitForm() {
-      if (this.form.content == '') {
-        this.form.error = 'please fill in a message';
-        return;
-      }
       postsAPI
         .post({ content: this.form.content })
         .then(() => {
@@ -99,22 +73,37 @@ export default {
           this.form.error = '';
           this.getPosts();
         })
-        .catch((err) => {
-          console.log(err);
-          this.form.error = 'please fill in a message';
-        });
+        .catch((err) => {});
     },
 
     getPosts() {
       postsAPI
         .get()
         .then((res) => {
-          this.allMessages = res;
+          this.messages = res;
+          this.loadingComplete = true;
         })
         .catch((err) => {
+          this.loadingError = true;
+          this.loadingComplete = true;
           console.log(err);
         });
     },
+
+    beforeEnter(el) {
+      el.style.opacity = 0;
+      el.style.transform = 'translateY(100px)';
+    },
+    
+    enter(el, done) {
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        duration: 0.4,
+        onComplete: done,
+        delay: el.dataset.index * 0.04
+      })
+    }
   },
 
   created() {
@@ -129,6 +118,23 @@ export default {
   &__messageContainer {
     display: flex;
     flex-wrap: wrap;
+    width: calc(100% + 50px);
+    margin-left: -25px;
+    min-height: 100%;
+  }
+
+  &__createContainer {
+    width: calc(33.3333333% - 50px);
+    max-height: 200px;
+    margin: 25px;
+    textarea {
+      width: 100%;
+      height: 70%;
+      resize: none;
+    }
+    input[type='submit'] {
+      float: right;
+    }
   }
 
   &__col {
@@ -140,5 +146,22 @@ export default {
       width: 100%;
     }
   }
+}
+
+.wallstate-enter-from,
+.wallstate-leave-to {
+  opacity: 0;
+  //transform: translateY(20px);
+}
+.wallstate-enter-to,
+.wallstate-leave-from {
+  opacity: 1;
+  //transform: translateY(0px);
+}
+.wallstate-enter-active {
+  transition: all 0.4s ease;
+}
+.wallstate-leave-active {
+  transition: all 0.4s ease;
 }
 </style>

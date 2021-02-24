@@ -10,11 +10,16 @@ const getAllPosts = (req, res) => {
         console.log(err);
         return req.status(500).send('could not get posts');
       }
-      res.json(posts);
+      setTimeout(() => {
+        res.json(posts);
+      }, 1000);
     });
 };
 
 const addPost = (req, res) => {
+  if(!req.body.content) {
+    return res.status(400).send('cannot post empty message');
+  }
   const post = new Post({
     content: req.body.content,
     user: req.user._id
@@ -29,11 +34,11 @@ const addPost = (req, res) => {
 
 const deleteOnePost = (req, res) => {
   Post.findOneAndDelete({ _id: req.params.id, user: req.user.id }, (err, post) => {
-    if(err) {
+    if (err) {
       console.log(err);
       return res.sendStatus(500);
     }
-    if(post === null) {
+    if (post === null) {
       return res.sendStatus(400);
     }
     res.send();

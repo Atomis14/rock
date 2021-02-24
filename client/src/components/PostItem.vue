@@ -1,7 +1,9 @@
 <template>
-  <div class="PostItem__message">
+  <div class="PostItem__message frosted" v-if="user">
     <p class="PostItem__messageContent">{{ message.content }}</p>
-    <p>by: <strong>{{ message.user.username }}</strong></p>
+    <p>
+      by: <strong>{{ message.user.username }}</strong>
+    </p>
     <a
       @click="deletePost"
       :data-id="message._id"
@@ -26,8 +28,8 @@ export default {
     },
     index: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
@@ -40,7 +42,7 @@ export default {
     deletePost(e) {
       const id = e.target.dataset.id;
       postsAPI.removeOne(id).then((res) => {
-        this.$parent.getPosts();
+        this.$emit('deleted');
       });
     },
   },
@@ -50,10 +52,19 @@ export default {
 <style lang="scss" scoped>
 .PostItem {
   &__message {
-    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 15px;
     background-color: white;
     margin: 25px;
-    padding: 10px;
+    padding: 30px;
+    width: calc(33.333333% - 50px);
+    height: 200px;
+    box-shadow: $boxShadow-medium;
+    p {
+      margin: 0;
+    }
     a {
       color: $color-warning;
       //position: absolute;

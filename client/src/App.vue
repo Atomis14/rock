@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="[!user ? 'public' : 'secure']">
+  <div class="app" :class="[!user ? 'public' : 'secure']">
     
     <Sidebar v-if="user" />
 
@@ -61,7 +61,7 @@ export default {
 
 
 <style lang="scss">
-#app {
+.app {
   display: flex;
   min-height: 100vh;
   min-width: 100vw;

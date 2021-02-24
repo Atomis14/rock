@@ -1,11 +1,9 @@
 <template>
-  <transition appear name="notification">
-    <div class="Notification frosted frosted--shadow" v-show="showNotification">
-      <i class="material-icons" v-if="notification.type == 'error'">error</i>
-      <i class="material-icons" v-if="notification.type == 'success'">done</i>
-      <span>{{ notification.message }}</span>
-    </div>
-  </transition>
+  <div class="Notification frosted frosted--shadow" v-show="showNotification">
+    <i class="material-icons" v-if="notification.type == 'error'">error</i>
+    <i class="material-icons" v-if="notification.type == 'success'">done</i>
+    <span>{{ notification.message }}</span>
+  </div>
 </template>
 
 <script>
@@ -22,7 +20,7 @@ export default {
 
   data() {
     return {
-      showNotification: false,
+      showNotification: true,
     };
   },
 
@@ -33,10 +31,8 @@ export default {
   },
 
   mounted() {
-    this.showNotification = true;
     setTimeout(() => {
       this.showNotification = false;
-      //this.removeNotification(this.notification.id);
     }, 5000);
   },
 };
@@ -49,24 +45,10 @@ export default {
   display: flex;
   align-items: center;
   margin: 10px 0;
+  width: 100%;
   i {
     margin-right: 10px;
     align-self: flex-start;
-    width: 25px;
   }
-}
-
-.notification-enter-active,
-.notification-leave-active {
-  transition: all 0.4s ease;
-}
-
-.notification-enter-from {
-  transform: translateY(10px);
-  opacity: 0;
-}
-
-.notification-leave-to {
-  opacity: 0;
 }
 </style>
