@@ -4,6 +4,11 @@ import store from '../store';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Dashboard from '../views/Dashboard.vue';
+import Wall from '../views/Wall.vue';
+
+import Messages from '../views/Messages.vue';
+import MessagesOverview from '../components/Messages/MessagesOverview.vue';
+import MessagesList from '../components/Messages/MessagesList.vue';
 
 const routes = [
   {
@@ -32,7 +37,7 @@ const routes = [
   {
     path: '/wall',
     name: 'Wall',
-    component: () => import('../views/Wall.vue'),
+    component: Wall,
     meta: {
       protectedRoute: true
     }
@@ -40,10 +45,27 @@ const routes = [
   {
     path: '/messages',
     name: 'Messages',
-    component: () => import('../views/Messages.vue'),
+    component: Messages,
     meta: {
       protectedRoute: true
-    }
+    },
+    children: [
+      {
+        path: '',
+        name: 'MessagesOverview',
+        component: MessagesOverview
+      },
+      {
+        path: 'received',
+        name: 'MessagesReceived',
+        component: MessagesList
+      },
+      {
+        path: 'sent',
+        name: 'MessagesSent',
+        component: MessagesList
+      }
+    ]
   },
   {
     path: '/cloud',

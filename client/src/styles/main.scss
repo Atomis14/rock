@@ -33,6 +33,18 @@ article {
 h1,
 h2 {
   font-weight: 700;
+  margin: 0;
+}
+
+h1 {
+  font-size: 7rem;
+  @include lg {
+    font-size: 5rem;
+  }
+  @include md {
+    font-size: 2.5rem;
+  }
+  margin: 0;
 }
 
 p,
@@ -57,10 +69,12 @@ a {
 }
 
 .view {
-  padding: 30px 50px 30px 50px;
-  margin-left: 330px;
+  padding-left: 330px;
   width: 100%;
   background-color: $color-light;
+}
+.viewcontent {
+  padding: 30px 50px 30px 50px;
 }
 
 /////////////REUSABLE COMPONENTS
@@ -108,28 +122,16 @@ a {
   }
 }
 
-textarea {
-  border-radius: 15px;
-  padding: 15px;
-  font-family: $font-family-sans;
-  font-size: 1.6rem;
-  border: $border-light;
-}
-
+input,
+textarea,
 select {
-  border: none;
-  padding: 10px;
   font-size: 1.6rem;
-  border-radius: 5px;
+  font-family: $font-family-sans;
+  font-weight: $font-weight-normal;
+  border-radius: $borderRadius-regular;
+  padding: 10px;
+  height: 45px;
   border: $border-light;
-  box-shadow: $boxShadow-medium;
-}
-
-input {
-  font-size: 1.5rem;
-  padding: 5px;
-  margin: 5px;
-  width: 200px;
 }
 
 input:focus,
@@ -138,27 +140,22 @@ select:focus {
   outline: none;
 }
 
-input[type="text"],
-input[type="password"] {
-  border-radius: 7px;
-  padding: 7px 12px;
-  border: none;
-  height: 40px;
+input, textarea {
+  &::placeholder {
+    font-family: $font-family-sans;
+    font-weight: $font-weight-normal;
+    color: darkgrey;
+  }
 }
 
 input[type="button"],
 input[type="submit"] {
   border: none;
-  border-radius: 7px;
-  padding: 7px;
-  height: 40px;
-  transition: opacity 0.4s ease;
+  transition: background-color 0.4s ease;
   font-weight: $font-weight-bold;
-  font-family: $font-family-sans;
-  font-size: 1.6rem;
   &:hover {
     cursor: pointer;
-    opacity: 0.8;
+    background-color: lightgrey;
   }
 }
 

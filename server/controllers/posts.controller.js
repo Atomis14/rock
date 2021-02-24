@@ -12,7 +12,7 @@ const getAllPosts = (req, res) => {
       }
       setTimeout(() => {
         res.json(posts);
-      }, 1000);
+      }, 500);
     });
 };
 

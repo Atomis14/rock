@@ -1,10 +1,9 @@
 <template>
   <div class="app" :class="[!user ? 'public' : 'secure']">
-    
-    <Sidebar v-if="user" />
-
-    <PublicNav v-else />
-
+    <transition name="sidebar">
+      <Sidebar v-if="user" />
+      <PublicNav v-else />
+    </transition>
     <router-view v-slot="{ Component }">
       <transition
         mode="out-in"
@@ -15,7 +14,6 @@
         <component :is="Component"></component>
       </transition>
     </router-view>
-
     <Notification-wrapper />
   </div>
 </template>
@@ -30,13 +28,15 @@ import Sidebar from './components/Sidebar.vue';
 
 export default {
   data() {
-    return {};
+    return {
+      transitionType: 'slide',
+    };
   },
 
   components: {
     NotificationWrapper,
     PublicNav,
-    Sidebar
+    Sidebar,
   },
 
   computed: {
@@ -45,15 +45,52 @@ export default {
     }),
   },
 
+  watch: {
+    $route(to, from) {
+      const fromProtected = from.meta.protectedRoute;
+      const toProtected = to.meta.protectedRoute;
+      if (!fromProtected && !toProtected) {
+        this.transitionType = 'slide';
+      } else if (
+        (!fromProtected && toProtected) ||
+        (fromProtected && !toProtected)
+      ) {
+        this.transitionType = 'fade';
+      } else {
+        this.transitionType = 'none';
+      }
+    },
+  },
+
   methods: {
     beforeEnter(el) {
-      gsap.from(el, { opacity: 0, x: -20 });
+      if (this.transitionType == 'slide') {
+        gsap.from(el, { opacity: 0, x: -20 });
+      } else if (this.transitionType == 'fade') {
+        gsap.from(el, { opacity: 0 });
+      }
     },
     enter(el, done) {
-      gsap.to(el, { opacity: 1, x: 0, duration: 0.5, onComplete: done });
+      if (this.transitionType == 'slide') {
+        gsap.to(el, { opacity: 1, x: 0, duration: 0.4, onComplete: done });
+      } else if (this.transitionType == 'fade') {
+        gsap.to(el, { opacity: 1, duration: 0.4, onComplete: done });
+      } else {
+        setTimeout(() => {
+          done();
+        }, 1);
+      }
     },
     leave(el, done) {
-      gsap.to(el, { opacity: 0, x: 20, duration: 0.5, onComplete: done });
+      if (this.transitionType == 'slide') {
+        gsap.to(el, { opacity: 0, x: 20, duration: 0.4, onComplete: done });
+      } else if (this.transitionType == 'fade') {
+        gsap.to(el, { opacity: 0, duration: 0.4, onComplete: done });
+      } else {
+        setTimeout(() => {
+          done();
+        }, 1);
+      }
     },
   },
 };
@@ -91,6 +128,36 @@ export default {
     &::after {
       opacity: 1;
     }
+  }
+}
+
+.sidebar-enter-from,
+.sidebar-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.sidebar-enter-active {
+  animation: slideIn 0.8s ease;
+}
+.sidebar-leave-active {
+  transition: 0.5s all ease;
+}
+.sidebar-enter-to,
+.sidebar-leave-from {
+  opacity: 1;
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0%;
+  }
+  50% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0px);
   }
 }
 </style>
