@@ -3,7 +3,6 @@ import { handleResponse, handleError } from './response.js';
 
 axios.defaults.baseURL = '/api';
 
-/** @param {string} resource */
 const get = (resource) => {
   return axios
     .get(resource)
@@ -11,8 +10,6 @@ const get = (resource) => {
     .catch(handleError);
 };
 
-/** @param {string} resource */
-/** @param {string} id */
 const getOne = (resource, id) => {
   return axios
     .get(`${resource}/${id}`)
@@ -20,8 +17,6 @@ const getOne = (resource, id) => {
     .catch(handleError);
 };
 
-/** @param {string} resource */
-/** @param {object} model */
 const post = (resource, model) => {
   return axios
     .post(resource, model)
@@ -29,8 +24,6 @@ const post = (resource, model) => {
     .catch(handleError);
 };
 
-/** @param {string} resource */
-/** @param {object} model */
 const put = (resource, model) => {
   return axios
     .put(resource, model)
@@ -38,8 +31,6 @@ const put = (resource, model) => {
     .catch(handleError);
 };
 
-/** @param {string} resource */
-/** @param {object} model */
 const patch = (resource, model) => {
   return axios
     .patch(resource, model)
@@ -47,8 +38,6 @@ const patch = (resource, model) => {
     .catch(handleError);
 };
 
-/** @param {string} resource */
-/** @param {string} id */
 const remove = (resource) => {
   return axios
     .delete(resource)
@@ -56,8 +45,6 @@ const remove = (resource) => {
     .catch(handleError);
 };
 
-/** @param {string} resource */
-/** @param {string} id */
 const removeOne = (resource, id) => {
   return axios
     .delete(`${resource}/${id}`)

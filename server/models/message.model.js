@@ -11,12 +11,20 @@ const userMessageSchema = new Schema({
     type: Boolean,
     required: true
   },
+  deleted: {
+    type: Boolean,
+    required: true
+  },
   opened: {
     type: Boolean
   }
 }, { _id: false });
 
 const messageSchema = new Schema({
+  subject: {
+    type: String,
+    required: true
+  },
   content: {
     type: String,
     required: true

@@ -1,4 +1,4 @@
-import { ApiCore } from './utilities/core.js';
+import { ApiCore } from './core/core.js';
 
 const usersAPI = new ApiCore('/users', {
   get: true,

@@ -10,9 +10,7 @@ const getAllPosts = (req, res) => {
         console.log(err);
         return req.status(500).send('could not get posts');
       }
-      setTimeout(() => {
-        res.json(posts);
-      }, 500);
+      res.json(posts);
     });
 };
 

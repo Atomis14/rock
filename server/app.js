@@ -20,6 +20,7 @@ const dbURI = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_P
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(3000))
   .catch(err => console.log(err));
+mongoose.set('useFindAndModify', false);
 
 /////////////Middleware
 

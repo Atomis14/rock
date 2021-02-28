@@ -8,6 +8,8 @@ Projektstart: 10.02.2021
 
 Um den `node_modules` Ordner im `client`-Ordner installieren zu können, müssen auf Windows evtl. die Windows Build Tools installiert werden (`npm install --global windows-build-tools` von einer Administrator-Powershell).  
 
+Node Version: 15.10.0  
+
 **Troubleshooting**  
 - Falls Probleme mit cross-env auftauchen, kann es helfen, das Package neu zu installieren (verwendete Version hier ist `7.0.3`). Falls alles nicht funktioniert, kann das Programm auch ohne cross-env ausgeführt werden, indem die Zeile `cross-env NODE_ENV=production` im package.json entfernt wird und die Umgebung von Hand gesetzt.
 - Falls sich gewisse Packages nicht installieren oder deinstallieren lassen, kann es helfen, den Command als Administrator auszuführen, unter Windows von einer Administrator-Powershell

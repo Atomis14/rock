@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { postsAPI } from '../services/posts.service.js';
+import { postsAPI } from '../services/api/posts.api.js';
 import { mapGetters } from 'vuex';
 
 export default {

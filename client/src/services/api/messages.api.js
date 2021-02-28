@@ -1,4 +1,4 @@
-import { ApiCore } from './utilities/core.js';
+import { ApiCore } from './core/core.js';
 
 const messagesAPI = new ApiCore('/messages', {
   get: true,
@@ -6,7 +6,7 @@ const messagesAPI = new ApiCore('/messages', {
   post: true,
   put: false,
   patch: false,
-  remove: true,
+  remove: false,
   removeOne: true
 });
 

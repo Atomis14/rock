@@ -13,8 +13,8 @@ module.exports = {
     loaderOptions: {
       sass: { //@ ist eine Alias für den src-Ordner
         additionalData: `
-          @import "~bootstrap/scss/bootstrap-grid.scss";
           @import "@/styles/definitions.scss";
+          @import "@/styles/mixins.scss";
           @import "@/styles/main.scss";
         `
       }

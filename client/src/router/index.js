@@ -58,12 +58,18 @@ const routes = [
       {
         path: 'received',
         name: 'MessagesReceived',
-        component: MessagesList
+        component: MessagesList,
+        props: {
+          type: 'received'
+        }
       },
       {
         path: 'sent',
         name: 'MessagesSent',
-        component: MessagesList
+        component: MessagesList,
+        props: {
+          type: 'sent'
+        }
       }
     ]
   },
@@ -116,8 +122,8 @@ router.beforeEach(async (to, from, next) => {
 });
 
 router.afterEach((to, from) => {
-  window.scrollTo(0,0);
-  
+  window.scrollTo(0, 0);
+
 });
 
 export default router;

@@ -34,8 +34,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 70px;
-  background-color: green;
   position: sticky;
   top: 0;
   &__submenu {

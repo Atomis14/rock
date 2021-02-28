@@ -1,4 +1,4 @@
-import { authAPI } from '../services/auth.service.js';
+import { authAPI } from '../services/api/auth.api.js';
 
 export default {
   namespaced: true,
@@ -22,13 +22,13 @@ export default {
   actions: {
     async login({ dispatch }, credentials) {
       //const response = await axios.post('/auth/login', credentials);
-      await authAPI.post('login', credentials);
+      await authAPI.post('/login', credentials);
       return dispatch('attempt');
     },
 
     async register({ dispatch }, credentials) {
       //const response = await axios.post('/auth/register', credentials);
-      await authAPI.post('register', credentials);
+      await authAPI.post('/register', credentials);
       return dispatch('attempt');
     },
 
@@ -43,7 +43,7 @@ export default {
     },
 
     logout({ commit }) {
-      return authAPI.post('logout').then(() => {
+      return authAPI.post('/logout').then(() => {
         commit('SET_USER', null);
       });
     }

@@ -4,7 +4,9 @@ const messagesController = require('../controllers/messages.controller.js');
 
 const router = express.Router();
 
-router.get('/', authMiddleware.isAuthenticated, messagesController.getMessages);
+router.get('/latest', authMiddleware.isAuthenticated, messagesController.getLatestMessages);
+router.get('/received', authMiddleware.isAuthenticated, messagesController.getReceivedMessages);
+router.get('/sent', authMiddleware.isAuthenticated, messagesController.getSentMessages);
 router.post('/', authMiddleware.isAuthenticated, messagesController.sendMessage);
 router.delete('/:id', authMiddleware.isAuthenticated, messagesController.deleteMessage);
 

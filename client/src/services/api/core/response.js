@@ -1,4 +1,4 @@
-import store from '../../store/index.js';
+import store from '../../../store/index.js';
 
 export function handleResponse(response) {
   if (response.results) {

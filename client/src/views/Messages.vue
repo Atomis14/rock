@@ -9,14 +9,10 @@
 
 <script>
 import Titlebar from '../components/Titlebar.vue';
-import MessagesOverview from '../components/Messages/MessagesOverview.vue';
-import MessagesList from '../components/Messages/MessagesList.vue';
 
 export default {
   components: {
     Titlebar,
-    //MessagesOverview,
-    //MessagesList,
   },
 
   data() {
@@ -41,6 +37,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.Messages {
-}
 </style>

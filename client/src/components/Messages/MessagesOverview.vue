@@ -11,53 +11,67 @@
         </select>
         <input type="text" placeholder="Subject" v-model="form.subject" />
         <textarea v-model="form.content" placeholder="Message"></textarea>
-        <input type="submit" value="Send" />
+        <input type="submit" value="Send" class="buttonHover" />
         <p>{{ form.status }}</p>
       </form>
     </div>
     <div class="MessagesOverview__messagesContainer">
-      <div class="MessagesOverview__messageGroupContainer">
-        <h2>Last received messages</h2>
-        <MessagePreview
-          v-for="message in messages.receivedMessages"
-          :key="message._id"
-          :message="message"
-        />
-      </div>
-      <div class="MessagesOverview__messageGroupContainer">
-        <h2>Last sent messages</h2>
-        <MessagePreview
-          v-for="message in messages.sentMessages"
-          :key="message._id"
-          :message="message"
-        />
-      </div>
+      <template v-if="messages">
+        <div
+          class="MessagesOverview__messageGroupOuter"
+          v-for="(messageGroup, index) in messages"
+          :key="index"
+        >
+          <h2>
+            Last {{ index == 'receivedMessages' ? 'received' : 'sent' }} messages
+          </h2>
+          <div
+            v-if="messageGroup.length"
+            class="MessagesOverview__messageGroupInner"
+          >
+            <transition-group name="messageItem" mode="in-out">
+              <MessageItem
+                v-for="message in messageGroup"
+                :key="message._id"
+                :message="message"
+                :options="true"
+                @messageDeleted="messageDeleted"
+              />
+            </transition-group>
+          </div>
+          <p v-else>
+            No messages
+            {{ index == 'receivedMessages' ? 'received' : 'sent' }} yet.
+          </p>
+        </div>
+      </template>
+      <p v-else>Loading ...</p>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import { usersAPI } from '@/services/users.service.js';
-import { messagesAPI } from '@/services/messages.service.js';
-import MessagePreview from './MessagePreview.vue';
+import { usersAPI } from '@/services/api/users.api.js';
+import { messagesAPI } from '@/services/api/messages.api.js';
+import MessageItem from './MessageItem.vue';
 
 export default {
   name: 'MessagesOverview',
 
   components: {
-    MessagePreview,
+    MessageItem,
   },
 
   data() {
     return {
       form: {
         recipient: '',
+        subject: '',
         content: '',
-        status: '',
       },
-      users: {},
-      messages: {},
+      users: [],
+      messages: false,
     };
   },
 
@@ -70,18 +84,26 @@ export default {
   methods: {
     submitForm() {
       messagesAPI
-        .post({
+        .post('', {
           recipientId: this.form.recipient,
+          subject: this.form.subject,
           content: this.form.content,
         })
         .then(() => {
           this.form.recipient = '';
+          this.form.subject = '';
           this.form.content = '';
-          this.form.status = 'message sent successfully';
         })
-        .catch((err) => {
-          this.form.status = err.response.data;
-        });
+        .catch((err) => {});
+    },
+
+    messageDeleted(id) {
+      this.messages.receivedMessages = this.messages.receivedMessages.filter(
+        (message) => message._id != id
+      );
+      this.messages.sentMessages = this.messages.sentMessages.filter(
+        (message) => message._id != id
+      );
     },
   },
 
@@ -92,7 +114,7 @@ export default {
       });
     });
 
-    messagesAPI.get().then((messages) => (this.messages = messages));
+    messagesAPI.get('/latest').then((messages) => (this.messages = messages));
   },
 };
 </script>
@@ -100,6 +122,7 @@ export default {
 <style lang="scss" scoped>
 .MessagesOverview {
   display: flex;
+
   h2 {
     margin-bottom: 20px;
     margin-left: 2px;
@@ -121,10 +144,31 @@ export default {
     margin-left: 3%;
     width: 57%;
   }
-  &__messageGroupContainer {
+  &__messageGroupOuter {
     &:not(:first-child) {
       margin-top: 40px;
     }
+  }
+  &__messageGroupInner {
+    position: relative;
+  }
+
+  .messageItem-enter-from {
+    opacity: 0;
+  }
+  .messageItem-enter-active {
+    transition: opacity 0.4s ease;
+  }
+  .messageItem-leave-active {
+    transition: all 0.4s ease;
+    position: absolute;
+  }
+  .messageItem-leave-to {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  .messageItem-move {
+    transition: all 0.4s ease;
   }
 }
 </style>

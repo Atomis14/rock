@@ -36,7 +36,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { postsAPI } from '../services/posts.service.js';
+import { postsAPI } from '../services/api/posts.api.js';
 import gsap from 'gsap';
 import PostItem from '../components/PostItem.vue';
 import Overlay from '../components/Overlay.vue';
@@ -67,7 +67,7 @@ export default {
   methods: {
     submitForm() {
       postsAPI
-        .post({ content: this.form.content })
+        .post('', { content: this.form.content })
         .then(() => {
           this.form.content = '';
           this.form.error = '';

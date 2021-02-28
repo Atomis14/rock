@@ -5,8 +5,8 @@ export class ApiCore {
     this.url = url;
 
     if (options.get) {
-      this.get = () => {
-        return apiProvider.get(this.url);
+      this.get = (specifier='') => {
+        return apiProvider.get(this.url + specifier);
       };
     }
 
@@ -17,8 +17,8 @@ export class ApiCore {
     }
 
     if (options.post) {
-      this.post = (model) => {
-        return apiProvider.post(this.url, model);
+      this.post = (specifier='', model) => {
+        return apiProvider.post(this.url + specifier, model);
       };
     }
 
